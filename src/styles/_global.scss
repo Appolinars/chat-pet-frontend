@@ -1,0 +1,22 @@
+@import './variables';
+
+html {
+  scrollbar-color: $color-accent $color-dark-primary;
+  scrollbar-width: thin;
+}
+
+body {
+  font-family: $font-main;
+  background-color: $color-dark-primary;
+  color: $color-light-primary;
+  overflow-x: hidden;
+
+  @include custom-scrollbar;
+}
+
+.container {
+  max-width: 1900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 15px;
+}

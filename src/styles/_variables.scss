@@ -1,0 +1,26 @@
+$font-main: "Poppins";
+$color-accent: #ffff00;
+$color-secondary: #0fbb0f;
+$color-dark-primary: #000000;
+$color-light-primary: #e7dfe4;
+
+@mixin custom-scrollbar {
+  scrollbar-color: $color-accent $color-dark-primary;
+  scrollbar-width: thin;
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: $color-dark-primary;
+  }
+
+  &::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+    background-color: $color-dark-primary;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: $color-accent;
+  }
+}

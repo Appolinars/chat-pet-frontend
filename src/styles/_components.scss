@@ -1,0 +1,106 @@
+@import "./variables";
+
+.animated-btn {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 28px;
+  letter-spacing: 0.15em;
+  background-color: none;
+  border-radius: 5px;
+  padding: 10px 31px;
+  text-transform: uppercase;
+
+  color: $color-accent;
+  transition: background-color 0.5s, color 0.5s, box-shadow 0.5s;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    background-color: $color-accent;
+    color: $color-dark-primary;
+    box-shadow: 0 0 5px $color-accent, 0 0 25px $color-accent, 0 0 50px $color-accent,
+      0 0 200px $color-accent;
+  }
+
+  span {
+    position: absolute;
+    display: block;
+    &:nth-child(1) {
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, $color-accent);
+      animation: animateBtn1 1s linear infinite;
+    }
+    &:nth-child(2) {
+      top: 0;
+      right: 0;
+      transform: translateY(-100%);
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(180deg, transparent, $color-accent);
+      animation: animateBtn2 1s linear infinite;
+      animation-delay: 0.5s;
+    }
+    &:nth-child(3) {
+      bottom: 0;
+      right: 0;
+      transform: translateX(100%);
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(270deg, transparent, $color-accent);
+      animation: animateBtn3 1s linear infinite;
+      animation-delay: 1s;
+    }
+    &:nth-child(4) {
+      bottom: 0;
+      left: 0;
+      transform: translateY(100%);
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(360deg, transparent, $color-accent);
+      animation: animateBtn4 1s linear infinite;
+      animation-delay: 1.5s;
+    }
+  }
+}
+
+@keyframes animateBtn1 {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes animateBtn2 {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes animateBtn3 {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes animateBtn4 {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
