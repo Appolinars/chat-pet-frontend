@@ -1,42 +1,66 @@
-import { FC, PropsWithChildren } from "react";
-import { ThemeProvider as MUIThemeProvider, createTheme } from "@mui/material/styles";
-import { lightTheme } from "../config/theme";
+import { ThemeProvider as MUIThemeProvider, createTheme } from '@mui/material/styles';
+import { FC, PropsWithChildren } from 'react';
 
-const darkTheme = createTheme({
+export const colorTheme = {
+  bg: '#0f0e07',
+  accent: '#FFFF00',
+  font: '#e7dfe4',
+};
+
+const materialTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: 'dark',
     primary: {
-      // dark: "#ff4400",
-      main: lightTheme.accent,
-      // light: "#ff4400",
+      main: colorTheme.accent,
     },
   },
   typography: {
-    fontFamily: "Poppins",
+    fontFamily: 'Poppins',
+    fontSize: 16,
   },
   components: {
     MuiTextField: {
       styleOverrides: {
         root: {
-          "& .MuiFormLabel-root.Mui-focused": {
-            color: lightTheme.accent,
+          '&': {
+            backgroundColor: colorTheme.bg,
           },
-          "& .MuiOutlinedInput-root": {
-            "& > fieldset": {
-              transition: "border-color .3s",
+          '& .MuiFormLabel-root.Mui-focused': {
+            color: colorTheme.accent,
+          },
+          '& .MuiOutlinedInput-root': {
+            '& > fieldset': {
+              transition: 'border-color .3s',
             },
           },
-          "& .MuiOutlinedInput-root.Mui-focused": {
-            "& > fieldset": {
-              borderWidth: "1px",
-              // borderColor: lightTheme.accent,
+          '& .MuiOutlinedInput-root.Mui-focused': {
+            '& > fieldset': {
+              borderWidth: '1px',
             },
           },
-          "& .MuiOutlinedInput-root:hover": {
-            "& > fieldset": {
-              borderWidth: "1px",
-              borderColor: lightTheme.accent,
+          '& .MuiOutlinedInput-root:hover': {
+            '& > fieldset': {
+              borderWidth: '1px',
+              borderColor: colorTheme.accent,
             },
+          },
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          '&': {
+            transition: 'background-color .4s',
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          '& .MuiLoadingButton-loadingIndicator': {
+            color: colorTheme.accent,
           },
         },
       },
@@ -45,5 +69,5 @@ const darkTheme = createTheme({
 });
 
 export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
-  return <MUIThemeProvider theme={darkTheme}>{children}</MUIThemeProvider>;
+  return <MUIThemeProvider theme={materialTheme}>{children}</MUIThemeProvider>;
 };

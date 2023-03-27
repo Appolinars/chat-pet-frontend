@@ -1,11 +1,13 @@
-@import "./variables";
+@import './variables';
+
+.custom-scrollbar {
+  @include custom-scrollbar;
+}
 
 .animated-btn {
   outline: none;
   border: none;
   cursor: pointer;
-  font-size: 14px;
-  line-height: 28px;
   letter-spacing: 0.15em;
   background-color: none;
   border-radius: 5px;
@@ -104,3 +106,45 @@
     transform: translateY(-100%);
   }
 }
+
+.hover-undreline {
+  text-decoration: none;
+  position: relative;
+
+  &:before {
+    content: '';
+    width: 0;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: $color-accent;
+    transition: width 0.4s, left 0.4s;
+  }
+  &:hover {
+    &:before {
+      width: 100%;
+      left: 0;
+    }
+  }
+}
+
+// @keyframes breath {
+//   0% {
+//     animation-timing-function: cubic-bezier(0.9647, 0.2413, -0.0705, 0.7911);
+//     transform: scale(0.9099999999999999);
+//   }
+
+//   51% {
+//     animation-timing-function: cubic-bezier(0.9226, 0.2631, -0.0308, 0.7628);
+//     transform: scale(1.02994);
+//   }
+
+//   100% {
+//     transform: scale(0.9099999999999999);
+//   }
+// }
+
+// .breath {
+//   animation: breath 1s infinite linear;
+// }

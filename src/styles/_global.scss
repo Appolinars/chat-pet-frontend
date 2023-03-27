@@ -6,6 +6,7 @@ html {
 }
 
 body {
+  font-size: 16px;
   font-family: $font-main;
   background-color: $color-dark-primary;
   color: $color-light-primary;
@@ -14,8 +15,13 @@ body {
   @include custom-scrollbar;
 }
 
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .container {
-  max-width: 1900px;
+  max-width: 1400px;
   width: 100%;
   margin: 0 auto;
   padding: 0 15px;
