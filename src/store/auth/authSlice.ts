@@ -1,11 +1,16 @@
 import { isRejectedAction } from '..';
-import { checkAuth, login, logout, register } from './authActions';
+import { checkAuth, login, logout, registerUser, updateAvatar, updateUser } from './authActions';
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 
+
+
 import { localStorageHelper } from '@/shared/utils';
 
+
+
 import { IAuthState } from './authSlice.interface';
+
 
 const initialState: IAuthState = {
   user: null,
@@ -13,6 +18,7 @@ const initialState: IAuthState = {
   isCheckingAuth: false,
   checkAuthSuccess: false,
   checkAuthError: false,
+  isAvatarUpdating: false,
 };
 
 const sliceName = 'auth';
@@ -31,10 +37,10 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
+      .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
         localStorageHelper.set('token', action.payload.accessToken);
@@ -60,6 +66,20 @@ export const authSlice = createSlice({
         state.isCheckingAuth = false;
         state.checkAuthError = true;
         localStorageHelper.remove('token');
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(updateAvatar.pending, (state) => {
+        state.isAvatarUpdating = true;
+      })
+      .addCase(updateAvatar.fulfilled, (state, action) => {
+        state.isAvatarUpdating = false;
+        state.user = action.payload;
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;

@@ -2,10 +2,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { authService } from '@/services/auth.service';
 
-import { ILoginPayload, IRegisterPayload } from '@/shared/types/user';
-import { errorCatch, localStorageHelper } from '@/shared/utils';
+import { IAvatar, ILoginPayload, IRegisterPayload, IUpdatePayload } from '@/shared/types/user';
+import { errorCatch } from '@/shared/utils';
 
-export const register = createAsyncThunk(
+export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData: IRegisterPayload, thunkAPI) => {
     try {
@@ -34,6 +34,30 @@ export const checkAuth = createAsyncThunk('auth/refresh', async (_, thunkAPI) =>
     return thunkAPI.rejectWithValue(message);
   }
 });
+
+export const updateUser = createAsyncThunk(
+  'auth/update',
+  async (userData: IUpdatePayload, thunkAPI) => {
+    try {
+      return await authService.update(userData);
+    } catch (error: any) {
+      const message = errorCatch(error);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const updateAvatar = createAsyncThunk(
+  'auth/updateAvatar',
+  async (avatar: IAvatar | null, thunkAPI) => {
+    try {
+      return await authService.update({ avatar });
+    } catch (error: any) {
+      const message = errorCatch(error);
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {

@@ -1,11 +1,20 @@
-import { Button, TextField } from '@mui/material';
-import { FC } from 'react';
+import { LoadingButton } from '@mui/lab';
+import { TextField } from '@mui/material';
+import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import { AvatarUpload } from '@/components/common/avatarUpload/AvatarUpload';
+import { AvatarUpload } from '@/components/common/AvatarUpload';
 
+import { registerUser } from '@/store/auth/authActions';
+import { userLoadingSelector } from '@/store/auth/authSelectors';
+
+import { useDeleteFileMutation } from '@/services/upload.service';
+
+import { IAvatar } from '@/shared/types/user';
 import { emailRegex } from '@/shared/utils';
+
+import { useAppDispatch, useAppSelector } from '@/store';
 
 interface IFormInputs {
   username: string;
@@ -15,6 +24,11 @@ interface IFormInputs {
 }
 
 export const Register: FC = () => {
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector(userLoadingSelector);
+  const [deleteFile] = useDeleteFileMutation();
+  const [avatar, setAvatar] = useState<IAvatar | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -23,12 +37,33 @@ export const Register: FC = () => {
   } = useForm<IFormInputs>({ mode: 'onBlur' });
   const watchPassword = watch('password', '');
 
-  const onSubmit = (data: any) => console.log(data);
+  const onAvatarUpload = async (uploadedAvatar: IAvatar) => {
+    const oldAvatarId = avatar?.id;
+    setAvatar(uploadedAvatar);
+    if (oldAvatarId) await deleteFile(oldAvatarId);
+  };
+
+  const onAvatarDelete = () => {
+    setAvatar(null);
+  };
+
+  const onSubmit = (data: IFormInputs) => {
+    const { username, email, password } = data;
+    dispatch(registerUser({ username, email, password, avatar }));
+  };
+
   return (
     <section className="container min-h-screen flex flex-col justify-center items-center">
-      <h1 className="text-xl lg:text-4xl text-center font-bold uppercase tracking-widest mb-5">Register</h1>
+      <h1 className="text-xl lg:text-4xl text-center font-bold uppercase tracking-widest mb-5">
+        Register
+      </h1>
       <form className="max-w-lg w-full flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
-        <AvatarUpload className="self-center" />
+        <AvatarUpload
+          className="self-center"
+          avatar={avatar}
+          onAvatarDelete={onAvatarDelete}
+          onAvatarUpload={onAvatarUpload}
+        />
         <TextField
           label="Username"
           variant="outlined"
@@ -86,9 +121,15 @@ export const Register: FC = () => {
           error={!!errors?.passwordRepeat?.message}
           helperText={`${errors?.passwordRepeat?.message || ''}`}
         />
-        <Button className="w-full" variant="contained" type="submit">
-          Submit
-        </Button>
+        <LoadingButton
+          className="w-full"
+          variant="contained"
+          type="submit"
+          loading={loading}
+          loadingPosition="end"
+        >
+          Register
+        </LoadingButton>
         <p className="text-lg">
           Already have an account?{' '}
           <Link className="text-accentColor hover-undreline" to="/login">

@@ -1,6 +1,8 @@
 import { Action, AnyAction, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
+import { uploadApi } from '@/services/upload.service';
+
 import { authReducer } from './auth/authSlice';
 import { usersReducer } from './users/usersSlice';
 
@@ -14,7 +16,9 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     users: usersReducer,
+    [uploadApi.reducerPath]: uploadApi.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(uploadApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

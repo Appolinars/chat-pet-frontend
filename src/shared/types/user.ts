@@ -8,7 +8,7 @@ export interface IUser {
   _id: string;
   username: string;
   email: string;
-  avatar: string;
+  avatar: IAvatar | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -17,7 +17,7 @@ export interface IRegisterPayload {
   username: string;
   email: string;
   password: string;
-  avatar?: string;
+  avatar?: IAvatar | null;
 }
 
 export interface ILoginPayload {
@@ -26,7 +26,12 @@ export interface ILoginPayload {
 }
 
 export interface IUpdatePayload {
-  username: string;
-  avatar: string;
-  email: string;
+  username?: string;
+  avatar?: IAvatar | null;
+  email?: string;
+}
+
+export interface IAvatar {
+  id: string;
+  url: string;
 }

@@ -16,7 +16,7 @@ export const authService = {
   },
 
   async register(payload: IRegisterPayload) {
-    const response = await $api.post<IAuthResponse>('/user/registration', payload);
+    const response = await $api.post<IAuthResponse>('/user/register', payload);
     return response.data;
   },
 

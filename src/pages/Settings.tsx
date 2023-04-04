@@ -1,10 +1,19 @@
-import { Button, TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { TextField } from '@mui/material';
 import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { AvatarUpload } from '@/components/common/avatarUpload/AvatarUpload';
+import { AvatarUpload } from '@/components/common/AvatarUpload';
 
+import { updateAvatar, updateUser } from '@/store/auth/authActions';
+import { userLoadingSelector, userSelector } from '@/store/auth/authSelectors';
+
+import { useDeleteFileMutation } from '@/services/upload.service';
+
+import { IAvatar } from '@/shared/types/user';
 import { emailRegex } from '@/shared/utils';
+
+import { useAppDispatch, useAppSelector } from '@/store';
 
 interface IFormInputs {
   username: string;
@@ -12,18 +21,50 @@ interface IFormInputs {
 }
 
 export const Settings: FC = () => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(userSelector);
+  const loading = useAppSelector(userLoadingSelector);
+
+  const [deleteFile] = useDeleteFileMutation();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInputs>({ mode: 'onBlur' });
+  } = useForm<IFormInputs>({
+    mode: 'onBlur',
+    defaultValues: {
+      email: user?.email,
+      username: user?.username,
+    },
+  });
 
-  const onSubmit = (data: any) => console.log(data);
+  const onAvatarUpload = async (avatar: IAvatar) => {
+    const oldAvatarId = user?.avatar?.id;
+    dispatch(updateAvatar(avatar));
+    if (oldAvatarId) await deleteFile(oldAvatarId);
+  };
+
+  const onAvatarDelete = () => {
+    dispatch(updateAvatar(null));
+  };
+
+  const onSubmit = (data: IFormInputs) => {
+    dispatch(updateUser(data));
+  };
+
   return (
     <section className="container pt-11 flex flex-col justify-center items-center">
-      <h1 className="text-xl lg:text-4xl text-center font-bold uppercase tracking-widest mb-5">Edit your details</h1>
+      <h1 className="text-xl lg:text-4xl text-center font-bold uppercase tracking-widest mb-5">
+        Edit your details
+      </h1>
       <form className="max-w-lg w-full flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
-        <AvatarUpload className="self-center" />
+        <AvatarUpload
+          className="self-center"
+          avatar={user?.avatar}
+          onAvatarUpload={onAvatarUpload}
+          onAvatarDelete={onAvatarDelete}
+        />
         <TextField
           label="Username"
           variant="outlined"
@@ -50,9 +91,15 @@ export const Settings: FC = () => {
           error={!!errors?.email?.message}
           helperText={`${errors?.email?.message || ''}`}
         />
-        <Button className="w-full" variant="contained" type="submit">
+        <LoadingButton
+          className="w-full"
+          variant="contained"
+          type="submit"
+          loading={loading}
+          loadingPosition="end"
+        >
           Submit
-        </Button>
+        </LoadingButton>
       </form>
     </section>
   );

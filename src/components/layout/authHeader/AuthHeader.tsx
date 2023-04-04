@@ -4,6 +4,7 @@ import { FC, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { logout } from '@/store/auth/authActions';
+import { userSelector } from '@/store/auth/authSelectors';
 
 import defaultImage from 'images/default-avatar.png';
 
@@ -11,10 +12,11 @@ import { ReactComponent as LogoutIcon } from 'svg/logout.svg';
 import { ReactComponent as SettingsIcon } from 'svg/settings.svg';
 
 import { ChatIcon } from './ChatIcon';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 
 export const AuthHeader: FC = () => {
   const dispath = useAppDispatch();
+  const user = useAppSelector(userSelector);
   const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
   const imgRef = useRef(null);
 
@@ -32,7 +34,11 @@ export const AuthHeader: FC = () => {
         <div className="flex items-center">
           <Notifications />
           <button className="ml-4" ref={imgRef} onClick={() => setIsMenuActive(true)}>
-            <img className="w-12 h-12 rounded-full" src={defaultImage} alt="User's avatar" />
+            <img
+              className="w-12 h-12 rounded-full"
+              src={user?.avatar?.url || defaultImage}
+              alt="User's avatar"
+            />
           </button>
           <Menu
             anchorEl={imgRef.current}

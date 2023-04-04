@@ -5,7 +5,14 @@ const selectRoot = (state: RootState) => state;
 
 export const userSelector = createSelector(selectRoot, (state) => state.auth.user);
 export const userLoadingSelector = createSelector(selectRoot, (state) => state.auth.isLoading);
-export const isCheckingAuthSelector = createSelector(selectRoot, (state) => state.auth.isCheckingAuth);
+export const isCheckingAuthSelector = createSelector(
+  selectRoot,
+  (state) => state.auth.isCheckingAuth
+);
+export const isAvatarUpdatingSelector = createSelector(
+  selectRoot,
+  (state) => state.auth.isAvatarUpdating
+);
 export const authSuccessSelector = createSelector(
   selectRoot,
   (state) => state.auth.checkAuthSuccess
