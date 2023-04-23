@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { ChangeEvent, FC, MouseEvent, useRef } from 'react';
 import { toast } from 'react-toastify';
 
-import { isAvatarUpdatingSelector } from '@/store/auth/authSelectors';
+import { useUpdateAvatarMutation } from '@/store/auth/authApiSlice';
 
 import { useDeleteFileMutation, useUploadFileMutation } from '@/services/upload.service';
 
@@ -14,8 +14,6 @@ import defaultAvatar from 'images/default-avatar.png';
 
 import { ReactComponent as EditIcon } from 'svg/edit.svg';
 import { ReactComponent as TrashIcon } from 'svg/trash.svg';
-
-import { useAppSelector } from '@/store';
 
 interface IAvatarUpload {
   avatar: IAvatar | null | undefined;
@@ -30,9 +28,11 @@ export const AvatarUpload: FC<IAvatarUpload> = ({
   onAvatarUpload,
   onAvatarDelete,
 }) => {
-  const isUpdating = useAppSelector(isAvatarUpdatingSelector);
   const [uploadFile, { isLoading: isUploading }] = useUploadFileMutation();
   const [deleteFile, { isLoading: isDeleting }] = useDeleteFileMutation();
+  const [_, { isLoading: isUpdating }] = useUpdateAvatarMutation({
+    fixedCacheKey: 'avatar-update',
+  });
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {

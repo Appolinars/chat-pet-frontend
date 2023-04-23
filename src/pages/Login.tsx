@@ -4,12 +4,9 @@ import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import { login } from '@/store/auth/authActions';
-import { userLoadingSelector } from '@/store/auth/authSelectors';
+import { useLoginMutation } from '@/store/auth/authApiSlice';
 
 import { emailRegex } from '@/shared/utils';
-
-import { useAppDispatch, useAppSelector } from '@/store';
 
 interface IFormInputs {
   email: string;
@@ -17,17 +14,15 @@ interface IFormInputs {
 }
 
 export const Login: FC = () => {
-  const dispatch = useAppDispatch();
-  const loading = useAppSelector(userLoadingSelector);
-
+  const [login, { isLoading }] = useLoginMutation();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInputs>({ mode: 'onBlur' });
 
-  const onSubmit = (data: IFormInputs) => {
-    dispatch(login(data));
+  const onSubmit = async (data: IFormInputs) => {
+    await login(data);
   };
 
   return (
@@ -67,14 +62,17 @@ export const Login: FC = () => {
           className="w-full"
           variant="contained"
           type="submit"
-          loading={loading}
+          loading={isLoading}
           loadingPosition="end"
         >
           Login
         </LoadingButton>
         <p className="text-lg">
           Don't have an account?{' '}
-          <Link className="text-accentColor hover-undreline" to={loading ? '/login' : '/register'}>
+          <Link
+            className="text-accentColor hover-undreline"
+            to={isLoading ? '/login' : '/register'}
+          >
             Register
           </Link>
         </p>

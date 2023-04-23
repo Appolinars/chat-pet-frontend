@@ -1,5 +1,5 @@
-import { FC, useEffect, useMemo, useState } from 'react';
-import Div100vh, { use100vh } from 'react-div-100vh';
+import { FC, useMemo } from 'react';
+import { use100vh } from 'react-div-100vh';
 import { Outlet, useParams } from 'react-router-dom';
 
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
@@ -12,9 +12,8 @@ export const Chat: FC = () => {
   const { chatId } = useParams();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const height = use100vh();
-
   const chatHeight = useMemo(() => (height ? height - 90 : '100vh'), [height]); // 90px - height of header
-  const isSelectedMobile = useMemo(() => !isDesktop && chatId, [isDesktop, chatId]);
+  const isSelectedMobile = !isDesktop && chatId;
 
   return (
     <main

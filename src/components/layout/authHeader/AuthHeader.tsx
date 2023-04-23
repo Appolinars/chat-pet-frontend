@@ -3,7 +3,7 @@ import { Menu, MenuItem } from '@mui/material';
 import { FC, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { logout } from '@/store/auth/authActions';
+import { useLogoutMutation } from '@/store/auth/authApiSlice';
 import { userSelector } from '@/store/auth/authSelectors';
 
 import defaultImage from 'images/default-avatar.png';
@@ -12,17 +12,17 @@ import { ReactComponent as LogoutIcon } from 'svg/logout.svg';
 import { ReactComponent as SettingsIcon } from 'svg/settings.svg';
 
 import { ChatIcon } from './ChatIcon';
-import { useAppDispatch, useAppSelector } from '@/store';
+import { useAppSelector } from '@/store';
 
 export const AuthHeader: FC = () => {
-  const dispath = useAppDispatch();
   const user = useAppSelector(userSelector);
+  const [logout] = useLogoutMutation();
   const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
   const imgRef = useRef(null);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsMenuActive(false);
-    dispath(logout());
+    await logout('');
   };
 
   return (

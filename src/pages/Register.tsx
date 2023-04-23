@@ -6,15 +6,12 @@ import { Link } from 'react-router-dom';
 
 import { AvatarUpload } from '@/components/common/AvatarUpload';
 
-import { registerUser } from '@/store/auth/authActions';
-import { userLoadingSelector } from '@/store/auth/authSelectors';
+import { useRegisterMutation } from '@/store/auth/authApiSlice';
 
 import { useDeleteFileMutation } from '@/services/upload.service';
 
 import { IAvatar } from '@/shared/types/user';
 import { emailRegex } from '@/shared/utils';
-
-import { useAppDispatch, useAppSelector } from '@/store';
 
 interface IFormInputs {
   username: string;
@@ -24,8 +21,7 @@ interface IFormInputs {
 }
 
 export const Register: FC = () => {
-  const dispatch = useAppDispatch();
-  const loading = useAppSelector(userLoadingSelector);
+  const [registerUser, { isLoading }] = useRegisterMutation();
   const [deleteFile] = useDeleteFileMutation();
   const [avatar, setAvatar] = useState<IAvatar | null>(null);
 
@@ -47,9 +43,9 @@ export const Register: FC = () => {
     setAvatar(null);
   };
 
-  const onSubmit = (data: IFormInputs) => {
+  const onSubmit = async (data: IFormInputs) => {
     const { username, email, password } = data;
-    dispatch(registerUser({ username, email, password, avatar }));
+    await registerUser({ username, email, password, avatar });
   };
 
   return (
@@ -125,14 +121,17 @@ export const Register: FC = () => {
           className="w-full"
           variant="contained"
           type="submit"
-          loading={loading}
+          loading={isLoading}
           loadingPosition="end"
         >
           Register
         </LoadingButton>
         <p className="text-lg">
           Already have an account?{' '}
-          <Link className="text-accentColor hover-undreline" to="/login">
+          <Link
+            className="text-accentColor hover-undreline"
+            to={isLoading ? '/login' : '/register'}
+          >
             Login
           </Link>
         </p>

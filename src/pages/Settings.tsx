@@ -5,15 +5,15 @@ import { useForm } from 'react-hook-form';
 
 import { AvatarUpload } from '@/components/common/AvatarUpload';
 
-import { updateAvatar, updateUser } from '@/store/auth/authActions';
-import { userLoadingSelector, userSelector } from '@/store/auth/authSelectors';
+import { useUpdateAvatarMutation, useUpdateUserMutation } from '@/store/auth/authApiSlice';
+import { userSelector } from '@/store/auth/authSelectors';
 
 import { useDeleteFileMutation } from '@/services/upload.service';
 
 import { IAvatar } from '@/shared/types/user';
 import { emailRegex } from '@/shared/utils';
 
-import { useAppDispatch, useAppSelector } from '@/store';
+import { useAppSelector } from '@/store';
 
 interface IFormInputs {
   username: string;
@@ -21,11 +21,13 @@ interface IFormInputs {
 }
 
 export const Settings: FC = () => {
-  const dispatch = useAppDispatch();
   const user = useAppSelector(userSelector);
-  const loading = useAppSelector(userLoadingSelector);
 
   const [deleteFile] = useDeleteFileMutation();
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const [updateAvatar] = useUpdateAvatarMutation({
+    fixedCacheKey: 'avatar-update',
+  });
 
   const {
     register,
@@ -41,16 +43,16 @@ export const Settings: FC = () => {
 
   const onAvatarUpload = async (avatar: IAvatar) => {
     const oldAvatarId = user?.avatar?.id;
-    dispatch(updateAvatar(avatar));
+    await updateAvatar(avatar);
     if (oldAvatarId) await deleteFile(oldAvatarId);
   };
 
-  const onAvatarDelete = () => {
-    dispatch(updateAvatar(null));
+  const onAvatarDelete = async () => {
+    await updateAvatar(null);
   };
 
-  const onSubmit = (data: IFormInputs) => {
-    dispatch(updateUser(data));
+  const onSubmit = async (data: IFormInputs) => {
+    await updateUser(data);
   };
 
   return (
@@ -95,7 +97,7 @@ export const Settings: FC = () => {
           className="w-full"
           variant="contained"
           type="submit"
-          loading={loading}
+          loading={isLoading}
           loadingPosition="end"
         >
           Submit

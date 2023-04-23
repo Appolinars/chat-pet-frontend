@@ -1,10 +1,18 @@
-import { Action, AnyAction, configureStore } from '@reduxjs/toolkit';
+import {
+  Action,
+  AnyAction,
+  Middleware,
+  MiddlewareAPI,
+  configureStore,
+  isRejectedWithValue,
+} from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { uploadApi } from '@/services/upload.service';
 
+import { apiSlice } from './apiSlice';
 import { authReducer } from './auth/authSlice';
-import { usersReducer } from './users/usersSlice';
 
 interface IRejectedAction extends Action {
   payload: string;
@@ -12,13 +20,22 @@ interface IRejectedAction extends Action {
 export const isRejectedAction = (action: AnyAction, name: string): action is IRejectedAction =>
   action.type.startsWith(name) && action.type.endsWith('rejected');
 
+const rtkQueryErrorLogger: Middleware = (api: MiddlewareAPI) => (next) => (action) => {
+  if (isRejectedWithValue(action)) {
+    toast.error(action?.payload?.data?.message || 'Something went wrong');
+  }
+
+  return next(action);
+};
+
 export const store = configureStore({
   reducer: {
+    [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authReducer,
-    users: usersReducer,
     [uploadApi.reducerPath]: uploadApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(uploadApi.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware, uploadApi.middleware, rtkQueryErrorLogger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
