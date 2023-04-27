@@ -13,7 +13,6 @@ export default defineConfig({
       '@/pages': path.resolve(__dirname, './src/pages/'),
       '@/store': `${path.resolve(__dirname, './src/store/')}`,
       '@/styles': `${path.resolve(__dirname, './src/styles/')}`,
-      '@/config': `${path.resolve(__dirname, './src/config/')}`,
       '@/providers': `${path.resolve(__dirname, './src/providers/')}`,
       '@/router': `${path.resolve(__dirname, './src/router/')}`,
       '@/shared': `${path.resolve(__dirname, './src/shared/')}`,

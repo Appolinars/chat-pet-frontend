@@ -1,11 +1,10 @@
 import { CircularProgress } from '@mui/material';
 import clsx from 'clsx';
-import { ChangeEvent, FC, MouseEvent, useRef } from 'react';
+import { ChangeEvent, MouseEvent, useRef } from 'react';
 import { toast } from 'react-toastify';
 
-import { useUpdateAvatarMutation } from '@/store/auth/authApiSlice';
-
-import { useDeleteFileMutation, useUploadFileMutation } from '@/services/upload.service';
+import { useUpdateAvatarMutation } from '@/store/auth/authApi.slice';
+import { useDeleteFileMutation, useUploadFileMutation } from '@/store/upload/uploadApi.slice';
 
 import { IAvatar } from '@/shared/types/user';
 import { errorCatch } from '@/shared/utils';
@@ -22,12 +21,12 @@ interface IAvatarUpload {
   className?: string;
 }
 
-export const AvatarUpload: FC<IAvatarUpload> = ({
+export const AvatarUpload = ({
   className,
   avatar,
   onAvatarUpload,
   onAvatarDelete,
-}) => {
+}: IAvatarUpload) => {
   const [uploadFile, { isLoading: isUploading }] = useUploadFileMutation();
   const [deleteFile, { isLoading: isDeleting }] = useDeleteFileMutation();
   const [_, { isLoading: isUpdating }] = useUpdateAvatarMutation({

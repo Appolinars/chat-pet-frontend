@@ -1,12 +1,10 @@
-import { FC } from 'react';
-
 import avatar from 'images/default-avatar.png';
 
 interface IMessage {
   text: string;
 }
 
-export const Message: FC<IMessage> = ({ text }) => {
+export const Message = ({ text }: IMessage) => {
   return (
     <div className="flex flex-col max-w-sm">
       <div className="flex items-end">

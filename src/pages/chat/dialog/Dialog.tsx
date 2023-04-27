@@ -1,11 +1,11 @@
 import { TextareaAutosize } from '@mui/material';
-import { FC, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { ReactComponent as SendIcon } from 'svg/send.svg';
 
 import { Message } from './Message';
 
-export const Dialog: FC = () => {
+export const Dialog = () => {
   const [messages, setMessages] = useState([
     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, amet.',
     'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Qui laborum minima dolorem at cumque? Iure cum earum nisi ex quos?',

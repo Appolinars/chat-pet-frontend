@@ -1,14 +1,12 @@
 import { LoadingButton } from '@mui/lab';
 import { TextField } from '@mui/material';
-import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { AvatarUpload } from '@/components/common/AvatarUpload';
 
-import { useUpdateAvatarMutation, useUpdateUserMutation } from '@/store/auth/authApiSlice';
-import { userSelector } from '@/store/auth/authSelectors';
-
-import { useDeleteFileMutation } from '@/services/upload.service';
+import { userSelector } from '@/store/auth/auth.selectors';
+import { useUpdateAvatarMutation, useUpdateUserMutation } from '@/store/auth/authApi.slice';
+import { useDeleteFileMutation } from '@/store/upload/uploadApi.slice';
 
 import { IAvatar } from '@/shared/types/user';
 import { emailRegex } from '@/shared/utils';
@@ -20,7 +18,7 @@ interface IFormInputs {
   email: string;
 }
 
-export const Settings: FC = () => {
+export const Settings = () => {
   const user = useAppSelector(userSelector);
 
   const [deleteFile] = useDeleteFileMutation();

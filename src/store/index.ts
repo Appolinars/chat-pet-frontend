@@ -9,10 +9,8 @@ import {
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { uploadApi } from '@/services/upload.service';
-
-import { apiSlice } from './apiSlice';
-import { authReducer } from './auth/authSlice';
+import { apiSlice } from './api.slice';
+import { authReducer } from './auth/auth.slice';
 
 interface IRejectedAction extends Action {
   payload: string;
@@ -32,10 +30,9 @@ export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authReducer,
-    [uploadApi.reducerPath]: uploadApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware, uploadApi.middleware, rtkQueryErrorLogger),
+    getDefaultMiddleware().concat(apiSlice.middleware, rtkQueryErrorLogger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

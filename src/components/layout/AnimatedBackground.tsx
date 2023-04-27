@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
 import Particles from 'react-tsparticles';
 import type { Engine } from 'tsparticles-engine';
@@ -6,7 +6,7 @@ import { loadLinksPreset } from 'tsparticles-preset-links';
 
 import { colorTheme } from '@/providers/ThemeProvider';
 
-export const AnimatedBackground: FC = () => {
+export const AnimatedBackground = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadLinksPreset(engine);
   }, []);

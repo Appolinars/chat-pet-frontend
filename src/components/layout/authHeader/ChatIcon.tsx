@@ -1,8 +1,6 @@
-import { FC } from 'react';
-
 import { colorTheme } from '@/providers/ThemeProvider';
 
-export const ChatIcon: FC = () => {
+export const ChatIcon = () => {
   return (
     <svg
       viewBox="0 0 100 100"

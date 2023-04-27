@@ -1,12 +1,12 @@
 import { CircularProgress } from '@mui/material';
-import { FC, PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
-import { useCheckAuthMutation } from '@/store/auth/authApiSlice';
+import { useCheckAuthMutation } from '@/store/auth/authApi.slice';
 
 import { localStorageHelper } from '@/shared/utils';
 
 let renderCount = 0;
-export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
+export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [checkAuth, { isLoading }] = useCheckAuthMutation();
   const [success, setSuccess] = useState<boolean>(false);
   const token = localStorageHelper.get('token');

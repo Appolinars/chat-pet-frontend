@@ -1,5 +1,5 @@
 import { Badge, IconButton, Menu, MenuItem } from '@mui/material';
-import { FC, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ReactComponent as BellIcon } from 'svg/bell.svg';
@@ -15,7 +15,7 @@ const notifications = [
   },
 ];
 
-export const Notifications: FC = () => {
+export const Notifications = () => {
   const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
   const bellRef = useRef(null);
   return (

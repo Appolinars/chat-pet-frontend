@@ -5,7 +5,6 @@ import { IUser } from '@/shared/types/user';
 interface IAuthState {
   user: IUser | null;
 }
-
 const initialState: IAuthState = {
   user: null,
 };

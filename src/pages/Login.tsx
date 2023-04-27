@@ -1,10 +1,9 @@
 import { LoadingButton } from '@mui/lab';
 import { TextField } from '@mui/material';
-import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import { useLoginMutation } from '@/store/auth/authApiSlice';
+import { useLoginMutation } from '@/store/auth/authApi.slice';
 
 import { emailRegex } from '@/shared/utils';
 
@@ -13,7 +12,7 @@ interface IFormInputs {
   password: string;
 }
 
-export const Login: FC = () => {
+export const Login= () => {
   const [login, { isLoading }] = useLoginMutation();
   const {
     register,
@@ -69,10 +68,7 @@ export const Login: FC = () => {
         </LoadingButton>
         <p className="text-lg">
           Don't have an account?{' '}
-          <Link
-            className="text-accentColor hover-undreline"
-            to={isLoading ? '/login' : '/register'}
-          >
+          <Link className="text-accentColor hover-undreline" to="/register">
             Register
           </Link>
         </p>

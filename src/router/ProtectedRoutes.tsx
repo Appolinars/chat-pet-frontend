@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 import { AuthHeader } from '@/components/layout/authHeader/AuthHeader';
 
-import { userSelector } from '@/store/auth/authSelectors';
+import { userSelector } from '@/store/auth/auth.selectors';
 
 import { localStorageHelper } from '@/shared/utils';
 

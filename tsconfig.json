@@ -22,7 +22,6 @@
       "@/components/*": ["src/components/*"],
       "@/store/*": ["src/store/*"],
       "@/styles/*": ["src/styles/*"],
-      "@/config/*": ["src/config/*"],
       "@/providers/*": ["src/providers/*"],
       "@/router/*": ["src/router/*"],
       "@/shared/*": ["src/shared/*"],

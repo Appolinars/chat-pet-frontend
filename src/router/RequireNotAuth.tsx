@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { userSelector } from '@/store/auth/authSelectors';
+import { userSelector } from '@/store/auth/auth.selectors';
 
 import { useAppSelector } from '@/store';
 

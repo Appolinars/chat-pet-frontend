@@ -1,10 +1,10 @@
 import { Notifications } from './Notifications';
 import { Menu, MenuItem } from '@mui/material';
-import { FC, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useLogoutMutation } from '@/store/auth/authApiSlice';
-import { userSelector } from '@/store/auth/authSelectors';
+import { userSelector } from '@/store/auth/auth.selectors';
+import { useLogoutMutation } from '@/store/auth/authApi.slice';
 
 import defaultImage from 'images/default-avatar.png';
 
@@ -14,7 +14,7 @@ import { ReactComponent as SettingsIcon } from 'svg/settings.svg';
 import { ChatIcon } from './ChatIcon';
 import { useAppSelector } from '@/store';
 
-export const AuthHeader: FC = () => {
+export const AuthHeader = () => {
   const user = useAppSelector(userSelector);
   const [logout] = useLogoutMutation();
   const [isMenuActive, setIsMenuActive] = useState<boolean>(false);

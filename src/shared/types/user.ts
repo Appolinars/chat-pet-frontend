@@ -9,8 +9,6 @@ export interface IUser {
   username: string;
   email: string;
   avatar: IAvatar | null;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface IRegisterPayload {

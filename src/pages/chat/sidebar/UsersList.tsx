@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -8,114 +9,68 @@ import {
   MenuItem,
   MenuList,
 } from '@mui/material';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 
-import avatar from 'images/default-avatar.png';
+import { useGetUsersQuery } from '@/store/users/usersApi.slice';
 
-const users = [
-  {
-    id: 1,
-    username: 'John Doe',
-    avatar: avatar,
-  },
-  {
-    id: 2,
-    username: 'Max Doe',
-    avatar: avatar,
-  },
-  {
-    id: 3,
-    username: 'Mick Doe',
-    avatar: avatar,
-  },
-  {
-    id: 1,
-    username: 'John Doe',
-    avatar: avatar,
-  },
-  {
-    id: 2,
-    username: 'Max Doe',
-    avatar: avatar,
-  },
-  {
-    id: 3,
-    username: 'Mick Doe',
-    avatar: avatar,
-  },
-  {
-    id: 1,
-    username: 'John Doe',
-    avatar: avatar,
-  },
-  {
-    id: 2,
-    username: 'Max Doe',
-    avatar: avatar,
-  },
-  {
-    id: 3,
-    username: 'Mick Doe',
-    avatar: avatar,
-  },
-  {
-    id: 1,
-    username: 'John Doe',
-    avatar: avatar,
-  },
-  {
-    id: 2,
-    username: 'Max Doe',
-    avatar: avatar,
-  },
-  {
-    id: 3,
-    username: 'Mick Doe',
-    avatar: avatar,
-  },
-  {
-    id: 1,
-    username: 'John Doe',
-    avatar: avatar,
-  },
-  {
-    id: 2,
-    username: 'Max Doe',
-    avatar: avatar,
-  },
-  {
-    id: 3,
-    username: 'Mick Doe',
-    avatar: avatar,
-  },
-];
+import { IUser } from '@/shared/types/user';
 
-export const UsersList: FC = () => {
+import avatarDefault from 'images/default-avatar.png';
+
+export const UsersList = () => {
+  const { data: usersList, isLoading } = useGetUsersQuery('');
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
-  const toggleModal = () => {
-    setIsModalActive((prev) => !prev);
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+
+  const openModal = (user: IUser) => {
+    setSelectedUser(user);
+    setIsModalActive(true);
   };
+
+  const closeModal = () => {
+    setIsModalActive(false);
+  };
+
   return (
     <>
       <div className="flex flex-col py-3 overflow-hidden">
         <h1 className="text-2xl mb-6">Users list</h1>
-        <MenuList className="h-full overflow-y-auto custom-scrollbar">
-          {users.map((user) => (
-            <MenuItem key={user.id} onClick={toggleModal}>
-              <img className="w-12 h-12 rounded-full mr-3" src={user.avatar} alt={user.username} />
-              <p>{user.username}</p>
-            </MenuItem>
-          ))}
-        </MenuList>
+        {isLoading && (
+          <div className="flex justify-center text-accentColor">
+            <CircularProgress color="inherit" size={50} />
+          </div>
+        )}
+        {usersList && (
+          <MenuList className="h-full overflow-y-auto custom-scrollbar">
+            {usersList.map((user) => (
+              <MenuItem key={user._id} onClick={() => openModal(user)}>
+                <img
+                  className="w-12 h-12 rounded-full mr-3"
+                  src={user?.avatar?.url || avatarDefault}
+                  alt={user.username}
+                />
+                <p>{user.username}</p>
+              </MenuItem>
+            ))}
+          </MenuList>
+        )}
       </div>
-      <Dialog open={isModalActive} onClose={toggleModal}>
+      <Dialog
+        open={isModalActive}
+        onClose={closeModal}
+        TransitionProps={{
+          onExited() {
+            setSelectedUser(null);
+          },
+        }}
+      >
         <DialogTitle>Create dialog with user:</DialogTitle>
         <DialogContent>
-          <DialogContentText>John Doe</DialogContentText>
+          <DialogContentText>{selectedUser?.username}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={toggleModal}>Cancel</Button>
-          <Button onClick={toggleModal}>Create</Button>
+          <Button onClick={closeModal}>Cancel</Button>
+          <Button onClick={closeModal}>Create</Button>
         </DialogActions>
       </Dialog>
     </>

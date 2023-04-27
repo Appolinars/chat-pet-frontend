@@ -8,7 +8,7 @@ import {
 } from '@reduxjs/toolkit/query/react';
 
 import { IAuthResponse } from '../shared/types/user';
-import { resetAuth } from './auth/authSlice';
+import { resetAuth } from './auth/auth.slice';
 
 export const API_URL = import.meta.env.VITE_API_URL;
 

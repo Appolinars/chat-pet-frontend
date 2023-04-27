@@ -1,13 +1,13 @@
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import { FC, SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 
 import { ChatsList } from './ChatsList';
 import { UsersList } from './UsersList';
 
 type TabsTypes = 'chats' | 'users';
 
-export const Sidebar: FC = () => {
+export const Sidebar= () => {
   const [tabs, setTabs] = useState<TabsTypes>('chats');
 
   const handleTabChange = (e: SyntheticEvent, newValue: TabsTypes) => {

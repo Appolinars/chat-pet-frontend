@@ -8,11 +8,11 @@ import {
 } from '@/shared/types/user';
 import { localStorageHelper } from '@/shared/utils';
 
-import { apiSlice } from '../apiSlice';
+import { apiSlice } from '../api.slice';
 
-import { resetAuth, setUser } from './authSlice';
+import { resetAuth, setUser } from './auth.slice';
 
-export const authApiSlice = apiSlice.injectEndpoints({
+const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<IAuthResponse, IRegisterPayload>({
       query: (body) => ({
@@ -108,12 +108,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
-    getUsers: builder.mutation({
-      query: () => ({
-        url: '/user/getAll',
-        method: 'GET',
-      }),
-    }),
   }),
 });
 
@@ -122,7 +116,6 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useCheckAuthMutation,
-  useGetUsersMutation,
   useUpdateUserMutation,
   useUpdateAvatarMutation,
 } = authApiSlice;

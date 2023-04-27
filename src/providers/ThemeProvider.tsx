@@ -1,5 +1,5 @@
 import { ThemeProvider as MUIThemeProvider, createTheme } from '@mui/material/styles';
-import { FC, PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 
 export const colorTheme = {
   bg: '#0f0e07',
@@ -68,6 +68,6 @@ const materialTheme = createTheme({
   },
 });
 
-export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
+export const ThemeProvider = ({ children }: PropsWithChildren) => {
   return <MUIThemeProvider theme={materialTheme}>{children}</MUIThemeProvider>;
 };

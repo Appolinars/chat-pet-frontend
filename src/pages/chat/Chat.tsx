@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { useMemo } from 'react';
 import { use100vh } from 'react-div-100vh';
 import { Outlet, useParams } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import { ReactComponent as CatIcon } from 'svg/cat.svg';
 
 import { Sidebar } from './sidebar/Sidebar';
 
-export const Chat: FC = () => {
+export const Chat = () => {
   const { chatId } = useParams();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const height = use100vh();

@@ -1,14 +1,13 @@
 import { LoadingButton } from '@mui/lab';
 import { TextField } from '@mui/material';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 import { AvatarUpload } from '@/components/common/AvatarUpload';
 
-import { useRegisterMutation } from '@/store/auth/authApiSlice';
-
-import { useDeleteFileMutation } from '@/services/upload.service';
+import { useRegisterMutation } from '@/store/auth/authApi.slice';
+import { useDeleteFileMutation } from '@/store/upload/uploadApi.slice';
 
 import { IAvatar } from '@/shared/types/user';
 import { emailRegex } from '@/shared/utils';
@@ -20,7 +19,7 @@ interface IFormInputs {
   passwordRepeat: string;
 }
 
-export const Register: FC = () => {
+export const Register = () => {
   const [registerUser, { isLoading }] = useRegisterMutation();
   const [deleteFile] = useDeleteFileMutation();
   const [avatar, setAvatar] = useState<IAvatar | null>(null);
@@ -128,10 +127,7 @@ export const Register: FC = () => {
         </LoadingButton>
         <p className="text-lg">
           Already have an account?{' '}
-          <Link
-            className="text-accentColor hover-undreline"
-            to={isLoading ? '/login' : '/register'}
-          >
+          <Link className="text-accentColor hover-undreline" to="/login">
             Login
           </Link>
         </p>

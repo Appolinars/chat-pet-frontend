@@ -1,14 +1,8 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
 import { IAvatar } from '@/shared/types/user';
 
-export const API_URL = import.meta.env.VITE_API_URL;
+import { apiSlice } from '../api.slice';
 
-export const uploadApi = createApi({
-  reducerPath: 'uploadApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: API_URL,
-  }),
+const uploadApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     uploadFile: builder.mutation<IAvatar, FormData>({
       query: (fileData) => ({

@@ -1,10 +1,9 @@
-import { userSelector } from '../store/auth/authSelectors';
-import { FC } from 'react';
+import { userSelector } from '../store/auth/auth.selectors';
 import { Link } from 'react-router-dom';
 
 import { useAppSelector } from '../store';
 
-export const Home: FC = () => {
+export const Home= () => {
   const user = useAppSelector(userSelector);
 
   return (
