@@ -1,6 +1,7 @@
 import { ThemeProvider as MUIThemeProvider, createTheme } from '@mui/material/styles';
 import { PropsWithChildren } from 'react';
 
+
 export const colorTheme = {
   bg: '#0f0e07',
   accent: '#FFFF00',
@@ -15,7 +16,7 @@ const materialTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Poppins',
+    fontFamily: 'Rubik',
     fontSize: 16,
   },
   components: {

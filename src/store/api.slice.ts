@@ -1,4 +1,3 @@
-import { localStorageHelper } from '../shared/utils';
 import {
   BaseQueryFn,
   FetchArgs,
@@ -6,8 +5,10 @@ import {
   createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
+import Cookies from 'js-cookie';
 
 import { IAuthResponse } from '../shared/types/user';
+
 import { resetAuth } from './auth/auth.slice';
 
 export const API_URL = import.meta.env.VITE_API_URL;
@@ -16,7 +17,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
   credentials: 'include',
   prepareHeaders: (headers) => {
-    const accessToken = localStorageHelper.get('token');
+    const accessToken = Cookies.get('token');
     if (accessToken) {
       headers.set('Authorization', `Bearer ${accessToken}`);
     }
@@ -43,11 +44,11 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
     isRetryDone = true;
     if (refreshResult?.data && !refreshResult?.error) {
       // store the new token
-      localStorageHelper.set('token', refreshResult.data.accessToken);
+      Cookies.set('token', refreshResult.data.accessToken);
       // retry original query with new access token
       result = await baseQuery(args, api, extraOptions);
     } else {
-      localStorageHelper.remove('token');
+      Cookies.remove('token');
       api.dispatch(resetAuth());
       console.log('Not authorized');
     }
@@ -58,6 +59,6 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['User'],
+  tagTypes: ['User', 'Message', 'Chat'],
   endpoints: () => ({}),
 });

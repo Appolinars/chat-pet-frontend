@@ -1,15 +1,14 @@
 import { CircularProgress } from '@mui/material';
+import Cookies from 'js-cookie';
 import { PropsWithChildren, useEffect, useState } from 'react';
 
 import { useCheckAuthMutation } from '@/store/auth/authApi.slice';
-
-import { localStorageHelper } from '@/shared/utils';
 
 let renderCount = 0;
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [checkAuth, { isLoading }] = useCheckAuthMutation();
   const [success, setSuccess] = useState<boolean>(false);
-  const token = localStorageHelper.get('token');
+  const token = Cookies.get('token');
 
   useEffect(() => {
     const handleUserAuth = async () => {

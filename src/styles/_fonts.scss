@@ -1,16 +1,33 @@
 @font-face {
-  font-family: "Poppins";
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local(""), url("../assets/fonts/poppins-v20-latin-regular.woff2") format("woff2"),
-    url("../assets/fonts/poppins-v20-latin-regular.woff") format("woff");
+  src: local(''), url('../assets/fonts/poppins-v20-latin-regular.woff2') format('woff2'),
+    url('../assets/fonts/poppins-v20-latin-regular.woff') format('woff');
 }
 @font-face {
-  font-family: "Poppins";
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: local(""), url("../assets/fonts/poppins-v20-latin-700.woff2") format("woff2"),
-    url("../assets/fonts/poppins-v20-latin-700.woff") format("woff");
+  src: local(''), url('../assets/fonts/poppins-v20-latin-700.woff2') format('woff2'),
+    url('../assets/fonts/poppins-v20-latin-700.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/rubik-v26-cyrillic_latin-regular.woff2') format('woff2'),
+    url('../assets/fonts/rubik-v26-cyrillic_latin-regular.woff') format('woff');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../assets/fonts/rubik-v26-cyrillic_latin-700.woff2') format('woff2'),
+    url('../assets/fonts/rubik-v26-cyrillic_latin-700.woff') format('woff');
 }

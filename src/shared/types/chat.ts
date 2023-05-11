@@ -1,5 +1,6 @@
-import { IAvatar } from './user';
+import { NavigateFunction } from 'react-router-dom';
 
+import { IAvatar } from './user';
 
 export interface IChatUser {
   _id: string;
@@ -13,6 +14,8 @@ export interface IMessage {
   content: string;
   chat: string;
   read: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IChat {
@@ -24,4 +27,14 @@ export interface IChat {
   groupAdmin: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ICreateChatPayload {
+  partnerId: string;
+  navigate: NavigateFunction;
+}
+
+export interface ISendMessagePayload {
+  chatId: string;
+  content: string;
 }

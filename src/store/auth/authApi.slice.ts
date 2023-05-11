@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 import {
   IAuthResponse,
   IAvatar,
@@ -6,7 +8,6 @@ import {
   IUpdatePayload,
   IUser,
 } from '@/shared/types/user';
-import { localStorageHelper } from '@/shared/utils';
 
 import { apiSlice } from '../api.slice';
 
@@ -23,7 +24,7 @@ const authApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          localStorageHelper.set('token', data.accessToken);
+          Cookies.set('token', data.accessToken);
           dispatch(setUser(data.user));
         } catch (err) {
           console.log(err);
@@ -39,7 +40,7 @@ const authApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          localStorageHelper.set('token', data.accessToken);
+          Cookies.set('token', data.accessToken);
           dispatch(setUser(data.user));
         } catch (err) {
           console.log(err);
@@ -54,7 +55,7 @@ const authApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-          localStorageHelper.remove('token');
+          Cookies.remove('token');
           dispatch(resetAuth());
         } catch (err) {
           console.log(err);
@@ -69,7 +70,7 @@ const authApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          localStorageHelper.set('token', data.accessToken);
+          Cookies.set('token', data.accessToken);
           dispatch(setUser(data.user));
         } catch (err) {
           console.log(err);

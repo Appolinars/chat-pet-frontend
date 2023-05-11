@@ -10,7 +10,9 @@ import {
   MenuList,
 } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { useCreateChatMutation } from '@/store/chat/chatApi.slice';
 import { useGetUsersQuery } from '@/store/users/usersApi.slice';
 
 import { IUser } from '@/shared/types/user';
@@ -18,9 +20,11 @@ import { IUser } from '@/shared/types/user';
 import avatarDefault from 'images/default-avatar.png';
 
 export const UsersList = () => {
+  const navigate = useNavigate();
   const { data: usersList, isLoading } = useGetUsersQuery('');
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const [createChat] = useCreateChatMutation();
 
   const openModal = (user: IUser) => {
     setSelectedUser(user);
@@ -29,6 +33,11 @@ export const UsersList = () => {
 
   const closeModal = () => {
     setIsModalActive(false);
+  };
+
+  const handleCreateChat = async () => {
+    await createChat({ partnerId: selectedUser?._id || '', navigate });
+    closeModal();
   };
 
   return (
@@ -70,7 +79,7 @@ export const UsersList = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={closeModal}>Cancel</Button>
-          <Button onClick={closeModal}>Create</Button>
+          <Button onClick={handleCreateChat}>Create</Button>
         </DialogActions>
       </Dialog>
     </>

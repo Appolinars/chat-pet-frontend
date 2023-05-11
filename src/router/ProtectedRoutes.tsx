@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { FC } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
@@ -5,13 +6,11 @@ import { AuthHeader } from '@/components/layout/authHeader/AuthHeader';
 
 import { userSelector } from '@/store/auth/auth.selectors';
 
-import { localStorageHelper } from '@/shared/utils';
-
 import { useAppSelector } from '@/store';
 
 export const ProtectedRoutes: FC = () => {
   const user = useAppSelector(userSelector);
-  const token = localStorageHelper.get('token');
+  const token = Cookies.get('token');
 
   if (!token) return <Navigate to="/login" replace />;
 

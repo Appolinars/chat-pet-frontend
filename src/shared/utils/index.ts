@@ -24,3 +24,7 @@ export const localStorageHelper = {
     IS_CLIENT ? localStorage.removeItem(key) : null;
   },
 };
+
+export const cropString = (str: string, maxLength: number) => {
+  return str.length > maxLength ? str.substring(0, maxLength) + '...' : str;
+};
