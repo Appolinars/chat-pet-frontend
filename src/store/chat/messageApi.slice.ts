@@ -1,5 +1,7 @@
 import { createEntityAdapter } from '@reduxjs/toolkit';
 
+import { socket } from '@/providers/SocketProvider';
+
 import { IMessage, ISendMessagePayload } from '@/shared/types/chat';
 
 import { apiSlice } from '../api.slice';
@@ -18,6 +20,24 @@ const messageApiSlice = apiSlice.injectEndpoints({
       transformResponse: (responseData: IMessage[]) => {
         return messagesAdapter.setAll(initialState, responseData);
       },
+      async onCacheEntryAdded(chatId, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
+        try {
+          await cacheDataLoaded;
+          const messagesListener = (eventMessage: IMessage) => {
+            if (chatId === eventMessage.chat) {
+              updateCachedData((draft) => {
+                messagesAdapter.upsertOne(draft, eventMessage);
+              });
+            }
+          };
+
+          socket.on('NEW_MESSAGE', messagesListener);
+        } catch (err) {
+          console.log(err);
+        }
+        await cacheEntryRemoved;
+        socket.off('NEW_MESSAGE');
+      },
       providesTags: (result, error, arg) =>
         result?.ids
           ? [
@@ -35,11 +55,13 @@ const messageApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted({ chatId }, { dispatch, queryFulfilled }) {
         try {
           const { data: newMessage } = await queryFulfilled;
-          dispatch(
-            messageApiSlice.util.updateQueryData('getMessages', chatId, (draft) => {
-              messagesAdapter.addOne(draft, newMessage);
-            })
-          );
+          // update cache of messages immediately
+          // dispatch(
+          //   messageApiSlice.util.updateQueryData('getMessages', chatId, (draft) => {
+          //     messagesAdapter.addOne(draft, newMessage);
+          //   })
+          // );
+          socket.emit('NEW_MESSAGE', newMessage);
         } catch (err) {
           console.log(err);
         }

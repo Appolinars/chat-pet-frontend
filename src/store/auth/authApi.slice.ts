@@ -1,17 +1,17 @@
 import Cookies from 'js-cookie';
 
-import {
-  IAuthResponse,
-  IAvatar,
-  ILoginPayload,
-  IRegisterPayload,
-  IUpdatePayload,
-  IUser,
-} from '@/shared/types/user';
+
+
+import { IAuthResponse, IAvatar, ILoginPayload, IRegisterPayload, IUpdatePayload, IUser } from '@/shared/types/user';
+
+
 
 import { apiSlice } from '../api.slice';
 
+
+
 import { resetAuth, setUser } from './auth.slice';
+
 
 const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -24,7 +24,7 @@ const authApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          Cookies.set('token', data.accessToken);
+          Cookies.set('token_pet', data.accessToken);
           dispatch(setUser(data.user));
         } catch (err) {
           console.log(err);
@@ -40,7 +40,7 @@ const authApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          Cookies.set('token', data.accessToken);
+          Cookies.set('token_pet', data.accessToken);
           dispatch(setUser(data.user));
         } catch (err) {
           console.log(err);
@@ -55,7 +55,7 @@ const authApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-          Cookies.remove('token');
+          Cookies.remove('token_pet');
           dispatch(resetAuth());
         } catch (err) {
           console.log(err);
@@ -70,7 +70,7 @@ const authApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          Cookies.set('token', data.accessToken);
+          Cookies.set('token_pet', data.accessToken);
           dispatch(setUser(data.user));
         } catch (err) {
           console.log(err);

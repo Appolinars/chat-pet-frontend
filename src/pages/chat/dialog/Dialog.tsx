@@ -1,20 +1,22 @@
 import { CircularProgress, TextareaAutosize } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { EmojiClickData } from 'emoji-picker-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useGetMessagesQuery, useSendMessageMutation } from '@/store/chat/messageApi.slice';
 
 import { ReactComponent as SendIcon } from 'svg/send.svg';
 
+import { ChatEmojiPicker } from './ChatEmojiPicker';
 import { Message } from './Message';
 
 export const Dialog = () => {
   const { chatId } = useParams();
 
   const { data: messagesList, isLoading } = useGetMessagesQuery(chatId || '');
-  const [sendMessage] = useSendMessageMutation();
+  const [sendMessage, { isLoading: isSendingMessage }] = useSendMessageMutation();
 
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState<string>('');
 
   const scrollDiv = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -32,6 +34,10 @@ export const Dialog = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messagesList, textareaRef.current?.offsetHeight]);
+
+  const handleEmojiClick = useCallback((emoji: EmojiClickData) => {
+    setNewMessage((prev) => `${prev} ${emoji.emoji}`);
+  }, []);
 
   const handleSendMessage = async () => {
     await sendMessage({
@@ -64,21 +70,26 @@ export const Dialog = () => {
         </div>
       )}
 
-      <footer className="flex items-center py-6 px-3 border-t border-accentColor">
-        <TextareaAutosize
-          className="w-full border bg-slate-900 border-slate-900 transition-shadow shadow-transparent focus:shadow-primary hover:shadow-primary p-3 mr-4 rounded-xl resize-none outline-none"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          minRows={1}
-          maxRows={4}
-          placeholder="Enter your message"
-          ref={textareaRef}
-        />
+      <footer className="flex items-center py-6 pl-3 pr-1 border-t border-accentColor">
+        <div className="relative w-full">
+          <TextareaAutosize
+            className="w-full border bg-slate-900 border-slate-900 transition-shadow shadow-transparent focus:shadow-primary hover:shadow-primary py-3 pl-3 pr-10 mr-4 rounded-xl resize-none outline-none"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            minRows={1}
+            maxRows={4}
+            placeholder="Enter your message"
+            ref={textareaRef}
+          />
+          <ChatEmojiPicker onEmojiClick={handleEmojiClick} />
+        </div>
+
         <button
-          className="flex items-center justify-center rounded-lg w-9 h-9 hover:text-accentColor transition-bg"
+          className="flex items-center justify-center rounded-lg w-9 h-9 ml-3 hover:text-accentColor transition-bg"
           onClick={handleSendMessage}
+          disabled={isSendingMessage}
         >
-          <SendIcon />
+          {isSendingMessage ? <CircularProgress color="inherit" size={20} /> : <SendIcon />}
         </button>
       </footer>
     </div>

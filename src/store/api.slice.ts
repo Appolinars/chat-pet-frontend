@@ -11,13 +11,13 @@ import { IAuthResponse } from '../shared/types/user';
 
 import { resetAuth } from './auth/auth.slice';
 
-export const API_URL = import.meta.env.VITE_API_URL;
+export const API_URL = `${import.meta.env.VITE_API_URL}/api`;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
   credentials: 'include',
   prepareHeaders: (headers) => {
-    const accessToken = Cookies.get('token');
+    const accessToken = Cookies.get('token_pet');
     if (accessToken) {
       headers.set('Authorization', `Bearer ${accessToken}`);
     }
@@ -44,11 +44,11 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
     isRetryDone = true;
     if (refreshResult?.data && !refreshResult?.error) {
       // store the new token
-      Cookies.set('token', refreshResult.data.accessToken);
+      Cookies.set('token_pet', refreshResult.data.accessToken);
       // retry original query with new access token
       result = await baseQuery(args, api, extraOptions);
     } else {
-      Cookies.remove('token');
+      Cookies.remove('token_pet');
       api.dispatch(resetAuth());
       console.log('Not authorized');
     }

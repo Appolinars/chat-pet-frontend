@@ -26,5 +26,5 @@ export const localStorageHelper = {
 };
 
 export const cropString = (str: string, maxLength: number) => {
-  return str.length > maxLength ? str.substring(0, maxLength) + '...' : str;
+  return str?.length > maxLength ? str?.substring(0, maxLength) + '...' : str;
 };

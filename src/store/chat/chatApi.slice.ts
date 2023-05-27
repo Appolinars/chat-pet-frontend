@@ -2,7 +2,7 @@ import { IChat, ICreateChatPayload } from '@/shared/types/chat';
 
 import { apiSlice } from '../api.slice';
 
-const chatApiSlice = apiSlice.injectEndpoints({
+export const chatApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getChats: builder.query<IChat[], string>({
       query: () => ({
@@ -27,14 +27,14 @@ const chatApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted({ partnerId, navigate }, { dispatch, queryFulfilled }) {
         try {
           const { data: newChat } = await queryFulfilled;
+          console.log('newChat', newChat);
           dispatch(
-            chatApiSlice.util.updateQueryData('getChats', partnerId, (draft) => {
-              console.log(draft);
-              draft.push(newChat);
+            chatApiSlice.util.updateQueryData('getChats', '', (draft) => {
+              draft?.push(newChat);
             })
           );
-          
-          // navigate(`/chat/${newChat._id}`);
+
+          navigate(`/chat/${newChat._id}`);
         } catch (err) {
           console.log(err);
         }

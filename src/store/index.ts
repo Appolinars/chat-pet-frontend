@@ -1,22 +1,9 @@
-import {
-  Action,
-  AnyAction,
-  Middleware,
-  MiddlewareAPI,
-  configureStore,
-  isRejectedWithValue,
-} from '@reduxjs/toolkit';
+import { Middleware, MiddlewareAPI, configureStore, isRejectedWithValue } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { apiSlice } from './api.slice';
 import { authReducer } from './auth/auth.slice';
-
-interface IRejectedAction extends Action {
-  payload: string;
-}
-export const isRejectedAction = (action: AnyAction, name: string): action is IRejectedAction =>
-  action.type.startsWith(name) && action.type.endsWith('rejected');
 
 const rtkQueryErrorLogger: Middleware = (api: MiddlewareAPI) => (next) => (action) => {
   if (isRejectedWithValue(action)) {

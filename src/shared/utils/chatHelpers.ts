@@ -1,6 +1,8 @@
 import { IChatUser } from '../types/chat';
 
 export const timeAgo = (timeString: string) => {
+  if (!timeString) return null;
+
   const now = new Date();
   const time = new Date(timeString);
   const diff = +now - +time;
@@ -24,7 +26,7 @@ export const timeAgo = (timeString: string) => {
   } else if (minutes >= 1) {
     return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
   } else {
-    return 'Less than 1 minute ago';
+    return 'Just now';
   }
 };
 

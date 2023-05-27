@@ -19,8 +19,8 @@ export const ChatsListItem = ({ chat }: IChatsListItem) => {
   const user = useAppSelector(userSelector);
 
   const chatPartner = getPartner(user?._id || '', chat.users);
-  const isLatestMine = chat.latestMessage.sender._id === user?._id;
-  const latestMessage = cropString(chat.latestMessage.content, 12);
+  const isLatestMine = chat?.latestMessage?.sender._id === user?._id;
+  const latestMessage = cropString(chat?.latestMessage?.content, 12);
 
   return (
     <MenuItem sx={{ padding: '0' }}>
@@ -51,10 +51,15 @@ export const ChatsListItem = ({ chat }: IChatsListItem) => {
             />
           </span>
           <span className="flex justify-between text-sm">
-            <span className="truncate">
-              {isLatestMine ? `You: ${latestMessage}` : latestMessage}
-            </span>
-            <span className="opacity-70">{timeAgo(chat.updatedAt)}</span>
+            {latestMessage ? (
+              <span className="truncate">
+                {isLatestMine ? `You: ${latestMessage}` : latestMessage}
+              </span>
+            ) : (
+              <span>No messages</span>
+            )}
+
+            <span className="opacity-70">{timeAgo(chat?.latestMessage?.createdAt)}</span>
           </span>
         </div>
       </Link>

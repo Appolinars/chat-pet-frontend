@@ -8,7 +8,7 @@ let renderCount = 0;
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [checkAuth, { isLoading }] = useCheckAuthMutation();
   const [success, setSuccess] = useState<boolean>(false);
-  const token = Cookies.get('token');
+  const token = Cookies.get('token_pet');
 
   useEffect(() => {
     const handleUserAuth = async () => {
