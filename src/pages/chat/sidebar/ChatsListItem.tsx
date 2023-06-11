@@ -1,7 +1,9 @@
 import { Badge, MenuItem } from '@mui/material';
+import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
 import { userSelector } from '@/store/auth/auth.selectors';
+import { useGetOnlineUsersQuery } from '@/store/users/usersApi.slice';
 
 import { IChat } from '@/shared/types/chat';
 import { cropString } from '@/shared/utils';
@@ -18,9 +20,12 @@ interface IChatsListItem {
 export const ChatsListItem = ({ chat }: IChatsListItem) => {
   const user = useAppSelector(userSelector);
 
+  const { data: onlineUsers } = useGetOnlineUsersQuery('');
+
   const chatPartner = getPartner(user?._id || '', chat.users);
   const isLatestMine = chat?.latestMessage?.sender._id === user?._id;
   const latestMessage = cropString(chat?.latestMessage?.content, 12);
+  const isOnline = onlineUsers?.includes(chatPartner?._id || '');
 
   return (
     <MenuItem sx={{ padding: '0' }}>
@@ -34,11 +39,16 @@ export const ChatsListItem = ({ chat }: IChatsListItem) => {
             src={chatPartner?.avatar?.url || defaultAvatar}
             alt="Avatar"
           />
-          <span className="inline-block w-3 h-3 rounded-full bg-success absolute top-0 right-0" />
+          <span
+            className={clsx(
+              'inline-block w-3 h-3 rounded-full absolute top-0 right-0',
+              isOnline ? 'bg-success' : 'bg-gray-400'
+            )}
+          />
         </div>
         <div className="flex flex-col grow">
           <span className="flex justify-between mb-2">
-            <span>{chatPartner.username}</span>
+            <span>{chatPartner?.username}</span>
             <Badge
               badgeContent={2}
               sx={{

@@ -38,3 +38,8 @@ export interface ISendMessagePayload {
   chatId: string;
   content: string;
 }
+
+export interface IDeleteMessagePayload {
+  chatId: string;
+  messageId: string;
+}

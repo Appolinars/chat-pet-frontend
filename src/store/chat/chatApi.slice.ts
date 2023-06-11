@@ -4,6 +4,11 @@ import { apiSlice } from '../api.slice';
 
 export const chatApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    fetchChat: builder.query<IChat, string>({
+      query: (chatId) => ({
+        url: `/chat/get/${chatId}`,
+      }),
+    }),
     getChats: builder.query<IChat[], string>({
       query: () => ({
         url: '/chat/getAll',
@@ -27,13 +32,11 @@ export const chatApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted({ partnerId, navigate }, { dispatch, queryFulfilled }) {
         try {
           const { data: newChat } = await queryFulfilled;
-          console.log('newChat', newChat);
           dispatch(
             chatApiSlice.util.updateQueryData('getChats', '', (draft) => {
               draft?.push(newChat);
             })
           );
-
           navigate(`/chat/${newChat._id}`);
         } catch (err) {
           console.log(err);
@@ -43,4 +46,4 @@ export const chatApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetChatsQuery, useCreateChatMutation } = chatApiSlice;
+export const { useGetChatsQuery, useCreateChatMutation, useFetchChatQuery } = chatApiSlice;

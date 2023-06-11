@@ -2,7 +2,7 @@ import { createEntityAdapter } from '@reduxjs/toolkit';
 
 import { socket } from '@/providers/SocketProvider';
 
-import { IMessage, ISendMessagePayload } from '@/shared/types/chat';
+import { IDeleteMessagePayload, IMessage, ISendMessagePayload } from '@/shared/types/chat';
 
 import { apiSlice } from '../api.slice';
 
@@ -67,7 +67,29 @@ const messageApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    deleteMessage: builder.mutation<{ deletedId: string }, IDeleteMessagePayload>({
+      query: (payload) => ({
+        url: '/message/delete',
+        method: 'DELETE',
+        body: {
+          messageId: payload.messageId,
+        },
+      }),
+      async onQueryStarted(payload, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(
+            messageApiSlice.util.updateQueryData('getMessages', payload.chatId, (draft) => {
+              messagesAdapter.removeOne(draft, payload.messageId);
+            })
+          );
+        } catch (err) {
+          console.log(err);
+        }
+      },
+    }),
   }),
 });
 
-export const { useGetMessagesQuery, useSendMessageMutation } = messageApiSlice;
+export const { useGetMessagesQuery, useSendMessageMutation, useDeleteMessageMutation } =
+  messageApiSlice;

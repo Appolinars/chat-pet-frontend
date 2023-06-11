@@ -10,6 +10,7 @@ import { Sidebar } from './sidebar/Sidebar';
 
 export const Chat = () => {
   const { chatId } = useParams();
+
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const height = use100vh();
   const chatHeight = useMemo(() => (height ? height - 90 : '100vh'), [height]); // 90px - height of header

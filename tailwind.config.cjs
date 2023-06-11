@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        accentColor: '#ffff00',
+        accentColor: '#33CCCC',
         darkPrimary: '#0f0e07',
         lightPrimary: '#e7dfe4',
         success: '#0fbb0f',
@@ -14,7 +14,7 @@ module.exports = {
         bg: 'background-color',
       },
       boxShadow: {
-        primary: '0 0 4px 1px #ffff00',
+        primary: '0 0 4px 1px #33CCCC',
       },
       transitionTimingFunction: {
         DEFAULT: 'ease-in-out',

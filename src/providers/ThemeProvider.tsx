@@ -4,7 +4,7 @@ import { PropsWithChildren } from 'react';
 
 export const colorTheme = {
   bg: '#0f0e07',
-  accent: '#FFFF00',
+  accent: '#33CCCC',
   font: '#e7dfe4',
 };
 

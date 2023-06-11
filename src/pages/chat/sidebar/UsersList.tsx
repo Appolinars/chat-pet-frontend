@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  MenuItem,
   MenuList,
 } from '@mui/material';
 import { useState } from 'react';
@@ -17,7 +16,7 @@ import { useGetUsersQuery } from '@/store/users/usersApi.slice';
 
 import { IUser } from '@/shared/types/user';
 
-import avatarDefault from 'images/default-avatar.png';
+import { UsersListItem } from './UsersListItem';
 
 export const UsersList = () => {
   const navigate = useNavigate();
@@ -52,14 +51,7 @@ export const UsersList = () => {
         {usersList && (
           <MenuList className="h-full overflow-y-auto custom-scrollbar">
             {usersList.map((user) => (
-              <MenuItem key={user._id} onClick={() => openModal(user)}>
-                <img
-                  className="w-12 h-12 rounded-full mr-3"
-                  src={user?.avatar?.url || avatarDefault}
-                  alt={user.username}
-                />
-                <p>{user.username}</p>
-              </MenuItem>
+              <UsersListItem key={user._id} user={user} onItemClick={() => openModal(user)} />
             ))}
           </MenuList>
         )}

@@ -2,30 +2,36 @@ import { PropsWithChildren, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { io } from 'socket.io-client';
 
-
-
 import { userSelector } from '@/store/auth/auth.selectors';
 import { chatApiSlice } from '@/store/chat/chatApi.slice';
 
-
-
 import { IMessage } from '@/shared/types/chat';
-
-
 
 import { useAppDispatch, useAppSelector } from '@/store';
 
-
 export const socket = io(import.meta.env.VITE_API_URL);
+let renderCount = 0;
 
 export const SocketProvider = ({ children }: PropsWithChildren) => {
   const user = useAppSelector(userSelector);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (user) {
-      socket.emit('setup', user);
-    }
+    const handleUserSocketSetup = async () => {
+      if (!user) return;
+
+      const isProd = import.meta.env.PROD;
+      if (isProd) {
+        socket.emit('setup', user);
+        return;
+      }
+      // emit once in development
+      if (renderCount !== 0) {
+        socket.emit('setup', user);
+      }
+      renderCount++;
+    };
+    handleUserSocketSetup();
   }, [user]);
 
   useEffect(() => {

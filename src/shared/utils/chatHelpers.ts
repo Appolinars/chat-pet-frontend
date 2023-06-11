@@ -30,6 +30,10 @@ export const timeAgo = (timeString: string) => {
   }
 };
 
-export const getPartner = (userId: string, chatUsers: IChatUser[]) => {
+export const getPartner = (
+  userId: string | undefined,
+  chatUsers: IChatUser[] | undefined
+): IChatUser | null => {
+  if (!userId || !chatUsers) return null;
   return chatUsers[0]._id === userId ? chatUsers[1] : chatUsers[0];
 };
