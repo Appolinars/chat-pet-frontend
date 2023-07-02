@@ -11,7 +11,7 @@ const messagesAdapter = createEntityAdapter<IMessage>({
 });
 const initialState = messagesAdapter.getInitialState();
 
-const messageApiSlice = apiSlice.injectEndpoints({
+export const messageApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMessages: builder.query({
       query: (chatId: string) => ({

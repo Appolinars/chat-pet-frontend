@@ -23,7 +23,7 @@ export const ChatsListItem = ({ chat }: IChatsListItem) => {
   const { data: onlineUsers } = useGetOnlineUsersQuery('');
 
   const chatPartner = getPartner(user?._id || '', chat.users);
-  const isLatestMine = chat?.latestMessage?.sender._id === user?._id;
+  const isLatestMine = chat?.latestMessage?.sender?._id === user?._id;
   const latestMessage = cropString(chat?.latestMessage?.content, 12);
   const isOnline = onlineUsers?.includes(chatPartner?._id || '');
 

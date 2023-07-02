@@ -32,9 +32,13 @@ export const chatApiSlice = apiSlice.injectEndpoints({
       async onQueryStarted({ partnerId, navigate }, { dispatch, queryFulfilled }) {
         try {
           const { data: newChat } = await queryFulfilled;
+          console.log('newChat', newChat);
           dispatch(
             chatApiSlice.util.updateQueryData('getChats', '', (draft) => {
-              draft?.push(newChat);
+              const isExistingChat = draft.find((chat) => chat._id === newChat._id);
+              if (!isExistingChat) {
+                draft?.push(newChat);
+              }
             })
           );
           navigate(`/chat/${newChat._id}`);

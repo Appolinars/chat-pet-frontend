@@ -27,6 +27,7 @@ export const Dialog = () => {
   }, []);
 
   useEffect(() => {
+    setTimeout(scrollToBottom, 300);
     if (messagesList && messagesList?.ids.length > 0) {
       scrollToBottom();
     }

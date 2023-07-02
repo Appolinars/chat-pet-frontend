@@ -1,17 +1,19 @@
 import Cookies from 'js-cookie';
 
-
-
-import { IAuthResponse, IAvatar, ILoginPayload, IRegisterPayload, IUpdatePayload, IUser } from '@/shared/types/user';
-
-
+import {
+  IAuthResponse,
+  IAvatar,
+  ILoginPayload,
+  IRegisterPayload,
+  IUpdatePayload,
+  IUser,
+} from '@/shared/types/user';
 
 import { apiSlice } from '../api.slice';
-
-
+import { chatApiSlice } from '../chat/chatApi.slice';
+import { messageApiSlice } from '../chat/messageApi.slice';
 
 import { resetAuth, setUser } from './auth.slice';
-
 
 const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -57,6 +59,9 @@ const authApiSlice = apiSlice.injectEndpoints({
           await queryFulfilled;
           Cookies.remove('token_pet');
           dispatch(resetAuth());
+          dispatch(authApiSlice.util.resetApiState());
+          dispatch(chatApiSlice.util.resetApiState());
+          dispatch(messageApiSlice.util.resetApiState());
         } catch (err) {
           console.log(err);
         }
